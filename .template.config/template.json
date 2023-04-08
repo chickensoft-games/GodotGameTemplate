@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Chickensoft",
+  "classifications": [
+    "Chickensoft",
+    "Godot"
+  ],
+  "name": "Chickensoft Game",
+  "identity": "Chickensoft.GodotGame",
+  "groupIdentity": "Chickensoft.Templates",
+  "shortName": "chickenpackage",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "Chickensoft.GodotGame",
+  "preferNameDirectory": true,
+  "symbols": {
+    "author": {
+      "type": "parameter",
+      "description": "Author of the package.",
+      "defaultValue": "Chickensoft Organization",
+      "replaces": "Chickensoft Organization"
+    },
+    "MainSlnPackageProjectGuid": {
+      "type": "generated",
+      "generator": "guid",
+      "format": "D",
+      "replaces": "00000000-0000-0000-0000-000000000001"
+    }
+  },
+  "sources": [
+    {
+      "source": "./src/",
+      "target": "./"
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+name: '📩 Self-Update'
+on:
+  schedule:
+    # See if there are changes to release once-per-day.
+    # Since our package template updates automatically, this ensures it will
+    # never be unreleased for more than a day.
+    - cron: 0 0 * * * # end of every day
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - 'major'
+          - 'minor'
+          - 'patch'
+
+jobs:
+  self_update:
+    name: '📩 Self-Update'
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.changes.outputs.changed }}
+
+    steps:
+      - name: '🧾 Checkout'
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+          lfs: true
+          token: ${{ secrets.GH_BASIC }}
+
+      - name: '🌏 Update Submodules'
+        run: |
+          git pull --recurse-submodules
+          git submodule update --remote --recursive
+
+      - name: '👀 See If Anything Changed'
+        id: changes
+        run: |
+          if [[ $(git status --porcelain) ]]; then
+            echo "Detected changes in repository."
+            echo "changed=1" >> $GITHUB_OUTPUT
+          else
+            echo "No changes in repository."
+            echo "changed=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🔎 Read Current Project Version
+        if: steps.changes.outputs.changed == 1
+        uses: KageKirin/get-csproj-version@v1.0.0
+        id: current-version
+        with:
+          file: Chickensoft.GodotGameTemplate.csproj
+          xpath: /Project/PropertyGroup/Version
+
+      - name: 🧮 Compute Next Version
+        if: steps.changes.outputs.changed == 1
+        uses:  chickensoft-games/next-godot-csproj-version@v1
+        id: next-version
+        with:
+          project-version: ${{ steps.current-version.outputs.version }}
+          # Read Godot version from the package we've included via submodules
+          godot-version: src/global.json 
+          bump: ${{ inputs.bump || 'patch' }}
+
+      - name: ✨ Print Next Version
+        if: steps.changes.outputs.changed == 1
+        run: |
+          echo "Next Version: '${{ steps.next-version.outputs.version }}'"
+
+      - name: 📝 Change Version
+        if: steps.changes.outputs.changed == 1
+        uses: vers-one/dotnet-project-version-updater@v1.3
+        with:
+          file: "Chickensoft.GodotGameTemplate.csproj"
+          version: ${{ steps.next-version.outputs.version }}
+
+      - name: ✍️ Commit Changes
+        run: |
+          git config user.name "action@github.com"
+          git config user.email "GitHub Action"
+          git commit -a -m "chore(version): update version to ${{ steps.next-version.outputs.version }}"
+          git push
+
+      # To only open a pull request instead of committing directly to the repository, uncomment the following steps and comment out the step above.
+
+      # - name: '⤴️ Create Pull Request'
+      #   if: steps.changes.outputs.changed == 1
+      #   uses: peter-evans/create-pull-request@v4
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     branch: version/${{ steps.next-version.outputs.version }}
+      #     commit-message: update submodules and version to ${{ steps.next-version.outputs.version }}
+      #     title: 'chore(project): update version to ${{ steps.next-version.outputs.version }}'
+      #     body: >
+      #       chore(project): update submodules and version to ${{ steps.next-version.outputs.version }}.
+
+  release:
+    uses: './.github/workflows/publish.yaml'
+    needs: self_update
+    if: needs.self_update.outputs.changed == 1
+    secrets:
+      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      GH_BASIC: ${{ secrets.GH_BASIC }}
