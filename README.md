@@ -9,7 +9,7 @@ C# game template for Godot 4 with automatic releases, dependency updates, debug 
 dotnet new --install Chickensoft.GodotGame
 
 # Generate a new game based on this template
-dotnet new chickenpackage --name "MyPackageName" --param:author "My Name"
+dotnet new chickengame --name "MyPackageName" --param:author "My Name"
 ```
 
 **NOTE:** This repository contains only the `dotnet new` template information and package description. The actual template contents are included as a git submodule from the [GodotGame] repository.

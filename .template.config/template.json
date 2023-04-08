@@ -8,7 +8,7 @@
   "name": "Chickensoft Game",
   "identity": "Chickensoft.GodotGame",
   "groupIdentity": "Chickensoft.Templates",
-  "shortName": "chickenpackage",
+  "shortName": "chickengame",
   "tags": {
     "language": "C#",
     "type": "project"
