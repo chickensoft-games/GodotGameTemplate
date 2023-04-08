@@ -79,6 +79,7 @@ jobs:
           version: ${{ steps.next-version.outputs.version }}
 
       - name: ✍️ Commit Changes
+        if: steps.changes.outputs.changed == 1
         run: |
           git config user.name "action@github.com"
           git config user.email "GitHub Action"
