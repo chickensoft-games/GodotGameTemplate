@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <Content Include=".template.config/template.json" Pack="true" PackagePath=".template.config/template.json" />
-    <Content Include="src/**/*" Pack="true" PackagePath="src" />
+    <Content Include="src/**/*" Pack="true" PackagePath="src" Exclude="src/CONTRIBUTING.md" />
     <Content Remove="src/.git/" />
     <None Include="icon.png" Pack="true" PackagePath="" />
     <None Include="README.md" Pack="true" PackagePath="\" />
