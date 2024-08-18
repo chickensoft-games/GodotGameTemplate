@@ -15,7 +15,7 @@
     <Title>GodotGame</Title>
     <Version>1.6.17</Version>
     <Description>C# game template for Godot 4 with debug launch configurations, testing (locally and on CI/CD), code coverage, dependency update checks, and spell check working out-of-the-box!</Description>
-    <Copyright>© 2023 Chickensoft</Copyright>
+    <Copyright>© 2024 Chickensoft</Copyright>
     <Company>Chickensoft</Company>
 
     <RepositoryType>git</RepositoryType>
