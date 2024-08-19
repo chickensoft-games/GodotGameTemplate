@@ -15,7 +15,7 @@
     <Title>GodotGame</Title>
     <Version>1.6.18</Version>
     <Description>C# game template for Godot 4 with debug launch configurations, testing (locally and on CI/CD), code coverage, dependency update checks, and spell check working out-of-the-box!</Description>
-    <Copyright>© 2023 Chickensoft</Copyright>
+    <Copyright>© 2024 Chickensoft</Copyright>
     <Company>Chickensoft</Company>
 
     <RepositoryType>git</RepositoryType>
@@ -23,7 +23,7 @@
 
     <IncludeContentInPack>true</IncludeContentInPack>
     <NoBuild>true</NoBuild>
-    <NoWarn>NU5128</NoWarn>
+    <NoWarn>NU5110;NU5111;NU5128</NoWarn>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <Content Include=".template.config/template.json" Pack="true" PackagePath=".template.config/template.json" />
-    <Content Include="src/**/*" Pack="true" PackagePath="src" />
+    <Content Include="src/**/*" Pack="true" PackagePath="src" Exclude="src/CONTRIBUTING.md" />
     <Content Remove="src/.git/" />
     <None Include="icon.png" Pack="true" PackagePath="" />
     <None Include="README.md" Pack="true" PackagePath="\" />

@@ -31,7 +31,10 @@
   "sources": [
     {
       "source": "./src/",
-      "target": "./"
+      "target": "./",
+      "exclude": [
+        "**/CONTRIBUTING.md"
+      ]
     }
   ]
 }
